@@ -37,4 +37,22 @@ const storage = multer.diskStorage({
         cb(null, file.originalname )
     }
 });
-const uload = multer({ storage });
+const upload = multer({ storage });
+
+// MONGOOSE SETUP
+
+// 1. Set the port for the application, defaulting to 3000 if not specified in environment variables
+const PORT = process.env.PORT || 3000;
+// 2. Connect to the MongoDB database using Mongoose
+mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParse: true,  // Ensure compatibility with newer MongoDB connection strings
+    useUnifiedTopology: true, // Use the new MongoDB driver topology engine
+})
+.then(() => {
+    // 3. If connection is successful, start the server and log a message
+    app.listen(PORT, () => console.log(`Connected to DB and listening on Port ${PORT}`));
+})
+.catch((error) => {
+    // 4. If connection fails, log an error message
+    console.log(`Error: ${error}, did not connect`);
+});
