@@ -29,30 +29,38 @@ app.use(cors()); // Enabling Cross-Origin Resource Sharing.
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 // FILE STOREAGE
+
+// Configure the storage engine using multer.diskStorage
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "public/assets")
-    },
-    filename: () => {
-        cb(null, file.originalname )
-    }
+  // Define the destination directory for uploaded files
+  destination: (req, file, cb) => {
+    // Set the destination path to "public/assets"
+    cb(null, "public/assets");
+  },
+
+  // Define the filename for uploaded files
+  filename: (req, file, cb) => {
+    // Keep the original filename
+    cb(null, file.originalname);
+  }
 });
+
+// Create a multer upload middleware instance
 const upload = multer({ storage });
 
 // MONGOOSE SETUP
 
-// 1. Set the port for the application, defaulting to 3000 if not specified in environment variables
+// Set the port for the application, defaulting to 3000 if not specified in environment variables
 const PORT = process.env.PORT || 3000;
-// 2. Connect to the MongoDB database using Mongoose
+// Connect to the MongoDB database using Mongoose
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParse: true,  // Ensure compatibility with newer MongoDB connection strings
     useUnifiedTopology: true, // Use the new MongoDB driver topology engine
 })
 .then(() => {
-    // 3. If connection is successful, start the server and log a message
+    //If connection is successful, start the server and log a message
     app.listen(PORT, () => console.log(`Connected to DB and listening on Port ${PORT}`));
 })
 .catch((error) => {
-    // 4. If connection fails, log an error message
     console.log(`Error: ${error}, did not connect`);
 });
