@@ -27,3 +27,14 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true })); // Parsing UR
 app.use(cors()); // Enabling Cross-Origin Resource Sharing.
 // Serving static files from the specified directory
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+
+// FILE STOREAGE
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "public/assets")
+    },
+    filename: () => {
+        cb(null, file.originalname )
+    }
+});
+const uload = multer({ storage });
