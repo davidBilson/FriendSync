@@ -8,6 +8,8 @@ import dotenv from "dotenv"; // Importing dotenv to load environment variables f
 import morgan from "morgan"; // Importing Morgan middleware for logging HTTP requests.
 import path from "path"; // Importing path module to manipulate file paths.
 import { fileURLToPath } from "url"; // Importing fileURLToPath function to convert file URLs to file paths.
+import { register } from "./controllers/auth.js"
+
 
 // CONFIGURATIONS
 
@@ -37,16 +39,17 @@ const storage = multer.diskStorage({
     // Set the destination path to "public/assets"
     cb(null, "public/assets");
   },
-
   // Define the filename for uploaded files
   filename: (req, file, cb) => {
     // Keep the original filename
     cb(null, file.originalname);
   }
 });
-
 // Create a multer upload middleware instance
 const upload = multer({ storage });
+
+// ROUTES WITH FILES
+app.post("/auth/register", upload.single("picture"), register )
 
 // MONGOOSE SETUP
 
