@@ -1,0 +1,2 @@
+Authorization is when the user is logged in, they will do things that the non-logged-in user can do.
+Authorized users will be able to hit API endpoints that the non-logged-in user will not be able to.

@@ -40,8 +40,32 @@ export const register = async (req, res) => {
     }
 }
 
-const data = { firstName, lastName, email, password }
+// LOGIN USER //
+export const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email: email });
 
-const { firstName, lastName} = data;
+        if (!user) {
+            return (
+                res.status(400).json({ message: "User does not exist"})
+            )
+        }
 
-console.log(firstName);
+        const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordMatch) {
+            return (
+                res.status(400).json({ message: "Invalid credentials." })
+            )
+        }
+
+        const token = jwt.sign({ id: user_id }, process.env.JWT_SECRET );
+
+        delete user.password; //delete password from object before sending to frontendW
+        res.status(200).json({ token, user })
+
+    } catch (err) {
+        res.status(500).json({ error: err.message})
+    }
+}

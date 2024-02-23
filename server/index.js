@@ -10,7 +10,9 @@ import morgan from "morgan"; // Logs HTTP requests.
 import path from "path"; // Manipulate file paths.
 import { fileURLToPath } from "url"; // Convert file URLs to file paths.
 // COMPONENT / FILE IMPORT
-import { register } from "./controllers/auth.js"
+import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/users.js";
+import { register } from "./controllers/auth.js";
 
 // CONFIGURATIONS //
 // Setting up file and directory paths
@@ -45,7 +47,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage }); // Create a multer upload middleware instance
 
 // ROUTES WITH FILES //
-app.post("/auth/register", upload.single("picture"), register )
+app.post("/auth/register", upload.single("picture"), register);
+
+// ROUTES //
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+
+
 
 // MONGOOSE SETUP //
 // Set the port for the application, defaulting to 3000 if not specified in environment variables
