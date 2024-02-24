@@ -12,7 +12,10 @@ import { fileURLToPath } from "url"; // Convert file URLs to file paths.
 // COMPONENT / FILE IMPORT
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
+import postRoutes from "./routes/posts.js";
 import { register } from "./controllers/auth.js";
+import { createPost } from "./controllers/posts.js";
+import { verifyToken } from "./middleware/auth.js";
 
 // CONFIGURATIONS //
 // Setting up file and directory paths
@@ -48,10 +51,12 @@ const upload = multer({ storage }); // Create a multer upload middleware instanc
 
 // ROUTES WITH FILES //
 app.post("/auth/register", upload.single("picture"), register);
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 // ROUTES //
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
+app.use('/post', postRoutes);
 
 
 
