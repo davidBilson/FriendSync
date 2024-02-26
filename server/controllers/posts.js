@@ -19,9 +19,7 @@ import User from "../models/user.js"
         })
 
         await newPost.save()
-
         const post = await Post.find()
-
         res.status(201).json(post)
 
     } catch (error) {
