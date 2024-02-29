@@ -58,8 +58,6 @@ app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use('/post', postRoutes);
 
-
-
 // MONGOOSE SETUP //
 // Set the port for the application, defaulting to 3000 if not specified in environment variables
 const PORT = process.env.PORT || 3000;

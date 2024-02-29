@@ -1,5 +1,5 @@
-import Post from "../models/post.js"
 import User from "../models/user.js"
+import Post from "../models/post.js"
 
 //  CREATE
  export const createPost = async (req, res) => {
@@ -38,6 +38,16 @@ export const getFeedPosts = async (req, res) => {
 }
 
 export const getUserPosts = async (req, res) => {
+    try {
+        const post = await Post.find();
+        res.status(200).json(post);
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
+// UPDATE //
+export const likePost = async (req, res) => {
     try {
         const post = await Post.find();
         res.status(200).json(post);
